@@ -20,12 +20,12 @@
                 </button>
             </div>
             <div class="card-container">
-                <div class="card" ng-repeat="card in cardsList">
+                <div class="animate-repeat card" ng-repeat="card in cardsList">
                     <div class="card-content">
-                        <img ng-src="{{card.cardImage}}" alt="{{ card.cardValue }} of {{ card.cardSuit }}">
+                        <img src="{{card.cardImage}}" alt="{{ card.cardValue }} of {{ card.cardSuit }}">
                     </div>
       
-                    <button class="btn card-buttons" ng-class="card.isHeld ? 'btn-danger' : 'btn-success' "
+                    <button class="btn card-buttons" ng-class="card.isHeld ? 'btn-danger' : 'btn-success' " ng-disabled="winningHand"
                         ng-click="card.isHeld =! card.isHeld">{{ card.isHeld ? 'UNHOLD' : 'HOLD' }}</button>
                 </div>
             </div>

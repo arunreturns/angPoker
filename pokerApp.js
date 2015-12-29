@@ -2,7 +2,7 @@
 
 var pokerApp = angular.module('pokerApp', ["ngAnimate"]);
 
-pokerApp.controller('MainController', function($scope){
+pokerApp.controller('MainController', function($scope, $timeout){
    $scope.cardsList = [];
    $scope.dealCount = 0;
    $scope.winningHand = null;
@@ -27,7 +27,7 @@ pokerApp.controller('MainController', function($scope){
    $scope.cards = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
    
    $scope.resetHand = function(){
-      $scope.checkForWinningHand();
+      $scope.winningHand = null;
       
       $scope.cardsList = [];
       $scope.dealCount = 0;
@@ -54,6 +54,8 @@ pokerApp.controller('MainController', function($scope){
             $scope.setCard(i);
          }
          console.log("Card List after " ,$scope.cardsList);
+         
+         $scope.checkForWinningHand();
       }
    };
    
@@ -118,12 +120,28 @@ pokerApp.controller('MainController', function($scope){
       
       // Check for straight 
       var isStraight = true;
-      var cards = Object.keys(pairMap).sort();
-      for(i = 1; i < cards.length; i++) {
-         if(cards[i] - cards[i-1] != 1) {
-            console.log("Not a straight set");
+      if ( $scope.pokerHands["One Pair"] ) {
+         isStraight = false;
+      } else {
+         var valueList = [];
+         if ( Object.keys(pairMap).length < 5 ) {
+            console.log("Not enough cards for straight");
             isStraight = false;
-            break;
+         } else {
+            for ( var value in pairMap ){
+               console.log("Looping for value", value);
+               valueList.push($scope.cards.indexOf(value));
+            }
+            console.log("Value list is ", valueList);
+            var cards = valueList.sort(function(a, b){return a-b});
+            console.log("Sorted cards list is ", cards);
+            for(i = 1; i < cards.length; i++) {
+               if(cards[i] - cards[i-1] != 1) {
+                  console.log("Not a straight set");
+                  isStraight = false;
+                  break;
+               }
+            }
          }
       }
       
@@ -131,6 +149,10 @@ pokerApp.controller('MainController', function($scope){
       var noOfCards = Object.keys(pairMap).length;
       console.log("Number of suits ", noOfSuits);
       console.log("Number of card val ", noOfCards);
+      
+      if ( noOfCards  === 2) {
+         $scope.pokerHands["Full House"] = true;
+      } 
       
       if (isStraight){
          $scope.pokerHands["Straight"] = true;
@@ -141,9 +163,15 @@ pokerApp.controller('MainController', function($scope){
             $scope.pokerHands["Flush"] = true;
       }
       
-      if ( noOfCards  === 2) {
-         $scope.pokerHands["Full House"] = true;
-      }   
+      // Check for four of a kind
+      for (var key in pairMap) {
+         console.log(key, pairMap[key]);
+         if ( pairMap[key] === 4) {
+            console.log("Four of a kind found for ", key);
+            $scope.pokerHands["Four of a kind"] = true;
+            break;
+         }
+      }
       var winningHand;
       
       for (var key in $scope.pokerHands) {
