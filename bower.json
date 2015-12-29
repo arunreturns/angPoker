@@ -1,0 +1,21 @@
+{
+  "name": "Poker",
+  "version": "0.0.0",
+  "authors": [
+    "arunreturns <arunreturns@gmail.com>"
+  ],
+  "description": "Poker Game",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-animate": "~1.4.8",
+    "bootstrap": "latest"
+  }
+}

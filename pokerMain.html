@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Poker</title>
+        <link rel="stylesheet" href="pokerStyles.css" type="text/css" />
+        <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+        
+        <script src="lib/jquery/dist/jquery.min.js"></script>
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular-animate/angular-animate.min.js"></script>
+        <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="pokerApp.js"></script>
+    </head>
+    
+    <body ng-app="pokerApp">
+        <div ng-controller="MainController">
+            <div style="padding: 2px;margin: 2px;">
+                <button class="btn btn-info card-buttons" ng-click="dealCount < 2 ? generateHand() : resetHand()">
+                    {{ dealCount < 2 ? 'DEAL' : 'PAYOUT' }}
+                </button>
+            </div>
+            <div class="card-container">
+                <div class="card" ng-repeat="card in cardsList">
+                    <div class="card-content">
+                        <img ng-src="{{card.cardImage}}" alt="{{ card.cardValue }} of {{ card.cardSuit }}">
+                    </div>
+      
+                    <button class="btn card-buttons" ng-class="card.isHeld ? 'btn-danger' : 'btn-success' "
+                        ng-click="card.isHeld =! card.isHeld">{{ card.isHeld ? 'UNHOLD' : 'HOLD' }}</button>
+                </div>
+            </div>
+            <div class="win-data">
+                <h3>{{ winningHand }}</h3>
+            </div>
+        </div>
+    </body>
+</html>
